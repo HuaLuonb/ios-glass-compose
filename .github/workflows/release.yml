@@ -1,0 +1,64 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Sample APK
+        run: ./gradlew :sample:assembleRelease
+
+      - name: Build Debug APK
+        run: ./gradlew :sample:assembleDebug
+
+      - name: Rename APKs
+        run: |
+          cp sample/build/outputs/apk/release/sample-release.apk ios-glass-sample-${{ github.ref_name }}-release.apk 2>/dev/null || true
+          cp sample/build/outputs/apk/debug/sample-debug.apk ios-glass-sample-${{ github.ref_name }}-debug.apk 2>/dev/null || true
+          # Fallback: find the APK files
+          find sample/build/outputs/apk -name "*.apk" -exec cp {} . \; 2>/dev/null || true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "iOS Glass Compose ${{ github.ref_name }}"
+          body: |
+            ## iOS Glass Compose ${{ github.ref_name }}
+
+            ### 🪟 Liquid Glass UI Library for Jetpack Compose
+
+            ### 更新内容
+            - 详见 [CHANGELOG](https://github.com/HuaLuonb/ios-glass-compose/blob/main/README.md)
+
+            ### 下载
+            - **release.apk** — Release 版本 (混淆优化)
+            - **debug.apk** — Debug 版本 (可调试)
+
+            ### 使用
+            ```kotlin
+            dependencies {
+                implementation("com.iosglass:library:${{ github.ref_name }}")
+            }
+            ```
+          files: |
+            *.apk
+          draft: false
+          prerelease: false

@@ -24,11 +24,28 @@ jobs:
       - name: Build Library
         run: ./gradlew :library:assembleRelease
 
-      - name: Build Sample
+      - name: Build Sample APK (Debug)
         run: ./gradlew :sample:assembleDebug
 
+      - name: Build Sample APK (Release)
+        run: ./gradlew :sample:assembleRelease
+
       - name: Run Lint
-        run: ./gradlew :library:lint
+        run: ./gradlew :library:lint --continue
 
       - name: Unit Tests
-        run: ./gradlew :library:test
+        run: ./gradlew :library:test --continue
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-glass-sample-debug
+          path: sample/build/outputs/apk/debug/*.apk
+          retention-days: 30
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-glass-sample-release
+          path: sample/build/outputs/apk/release/*.apk
+          retention-days: 30

@@ -7,6 +7,8 @@
 
 **The most comprehensive iOS 26 Liquid Glass UI library for Jetpack Compose.**
 
+**[🇨🇳 中文文档](README_CN.md)** | **[🇺🇸 English](README.md)**
+
 Pixel-perfect recreation of Apple's iOS 26 design language — Liquid Glass materials, spring animations, and every component you need.
 
 <p align="center">

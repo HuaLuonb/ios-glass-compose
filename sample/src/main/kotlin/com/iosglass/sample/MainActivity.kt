@@ -10,7 +10,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            IOSGlassDemoApp()
+            // 默认展示 Apple 设置 App 仿品
+            // 切换为组件展示: IOSGlassDemoApp()
+            AppleSettingsApp()
         }
     }
 }
