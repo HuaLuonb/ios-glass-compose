@@ -23,42 +23,46 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Sample APK
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper --gradle-version 8.11.1
+
+      - name: Build Release APK
         run: ./gradlew :sample:assembleRelease
 
       - name: Build Debug APK
         run: ./gradlew :sample:assembleDebug
-
-      - name: Rename APKs
-        run: |
-          cp sample/build/outputs/apk/release/sample-release.apk ios-glass-sample-${{ github.ref_name }}-release.apk 2>/dev/null || true
-          cp sample/build/outputs/apk/debug/sample-debug.apk ios-glass-sample-${{ github.ref_name }}-debug.apk 2>/dev/null || true
-          # Fallback: find the APK files
-          find sample/build/outputs/apk -name "*.apk" -exec cp {} . \; 2>/dev/null || true
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           name: "iOS Glass Compose ${{ github.ref_name }}"
           body: |
-            ## iOS Glass Compose ${{ github.ref_name }}
+            ## 🪟 iOS Glass Compose ${{ github.ref_name }}
 
-            ### 🪟 Liquid Glass UI Library for Jetpack Compose
+            基于 Jetpack Compose 的 iOS 26 Liquid Glass UI 组件库。
 
-            ### 更新内容
-            - 详见 [CHANGELOG](https://github.com/HuaLuonb/ios-glass-compose/blob/main/README.md)
+            ### ✨ 特性
+            - 🪟 Liquid Glass 毛玻璃材质引擎 (GPU 加速)
+            - 🎭 UIKit 弹簧动画系统
+            - 📱 40+ iOS 组件
+            - 🌗 完整 Light/Dark 主题
 
-            ### 下载
-            - **release.apk** — Release 版本 (混淆优化)
-            - **debug.apk** — Debug 版本 (可调试)
+            ### 📱 示例 APK
+            - **sample-release.apk** — Release 版本 (推荐)
+            - **sample-debug.apk** — Debug 版本
 
-            ### 使用
+            ### 🚀 使用
             ```kotlin
             dependencies {
-                implementation("com.iosglass:library:${{ github.ref_name }}")
+                implementation(project(":library"))
             }
             ```
+
+            ### 📖 文档
+            - [English README](https://github.com/HuaLuonb/ios-glass-compose/blob/main/README.md)
+            - [中文文档](https://github.com/HuaLuonb/ios-glass-compose/blob/main/README_CN.md)
           files: |
-            *.apk
+            sample/build/outputs/apk/release/*.apk
+            sample/build/outputs/apk/debug/*.apk
           draft: false
           prerelease: false

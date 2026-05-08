@@ -21,6 +21,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper --gradle-version 8.11.1
+
       - name: Build Library
         run: ./gradlew :library:assembleRelease
 
