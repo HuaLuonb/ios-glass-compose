@@ -1,0 +1,30 @@
+# Built outputs
+*.iml
+.gradle/
+/local.properties
+/.idea/
+/build/
+/captures
+.externalNativeBuild
+.cxx
+
+# Gradle
+*.aar
+*.apk
+*.aab
+
+# IDE
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kotlin
+*.kotlin_module
+
+# Build
+library/build/
+sample/build/
